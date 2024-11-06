@@ -1,0 +1,31 @@
+spring:
+ application:
+  name: "demo1"
+server:  
+ port: 8081
+
+ resilience4j:
+  circuitbreaker:
+    instances:
+      myServiceCircuitBreaker:
+        # Time window for measuring failure rates (in seconds)
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED # You can also use TIME_BASED
+        # Minimum number of calls before circuit breaker evaluates
+        minimumNumberOfCalls: 5
+        # Failure rate threshold (in percentage)
+        failureRateThreshold: 50
+        # Permitted number of half-open state calls to test if the circuit can close
+        permittedNumberOfCallsInHalfOpenState: 3
+        # Wait duration (in seconds) before retrying after circuit opens
+        waitDurationInOpenState: 10s
+        # If set to true, circuit breaker will be enabled
+        registerHealthIndicator: true
+
+    # Global configurations (applied to all circuit breakers if no specific instance is provided)
+    configs:
+      default:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+ 
